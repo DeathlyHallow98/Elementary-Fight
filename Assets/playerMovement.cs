@@ -10,10 +10,11 @@ public class playerMovement : MonoBehaviour
     public float numberOfJumps = 2;
     public float gravity = -20f;
 
+    
     // increase the gravity
     // Player movement
     // updates the canJump boolean
-    void Update()
+    void FixedUpdate()
     {
         Physics.gravity = new Vector3(0f, gravity, 0f);
         Jump();
