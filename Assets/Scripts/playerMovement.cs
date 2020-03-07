@@ -23,6 +23,7 @@ public class playerMovement : MonoBehaviour
         {
             canJump = false;
         }
+   
     }
 
     private void Update()
@@ -37,6 +38,7 @@ public class playerMovement : MonoBehaviour
     //Player Jumps, velocity is et to zero so second jump has the same height
     void Jump()
     {
+        Debug.Log("working");
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.AddForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
         rb.velocity = new Vector2(0, 0);
