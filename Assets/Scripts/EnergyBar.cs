@@ -1,25 +1,26 @@
-﻿
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthBar : MonoBehaviour
+public class EnergyBar : MonoBehaviour
 {
 
     public Slider slider;
     public Gradient gradient;
     public Image fill;
-    public void SetMaxHealth(int health)
+    public void SetMaxEnergy(int energy)
     {
-        slider.maxValue = health;
-        slider.value = health;
+        slider.maxValue = energy;
+        slider.value = energy;
 
         gradient.Evaluate(1f);
         fill.color = gradient.Evaluate(1f);
     }
-    public void SetHealth(int health)
+    public void SetEnergy(int energy)
     {
-        slider.value = health;
+        slider.value = energy;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
+    //regen meter later
+
 }

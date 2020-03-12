@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class projectile : MonoBehaviour
+public class projectile2 : MonoBehaviour
 {
     public float forward;
     public float upward;
@@ -10,7 +10,7 @@ public class projectile : MonoBehaviour
     private Rigidbody rb;
     private Transform tr;
     // Update is called once per frame
-   
+
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -21,28 +21,29 @@ public class projectile : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-            {
-           // rb.drag = 200;
-        }
-        if (Input.GetButton("Fire1"))
+        transform.Rotate(new Vector3(100f, 0f, 0f));
+        if (Input.GetButton("Fire2"))
         {
-           if(scale <=2)
+            if (scale <= 2)
             {
-            scale += 0.1f;
-            tr.localScale = new Vector3(scale, scale, scale);
+                scale += 0.1f;
+                tr.localScale = new Vector3(scale, scale, scale);
             }
 
-          
 
 
-        //    Debug.Log("s");
+
+            //    Debug.Log("s");
         }
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonUp("Fire2"))
         {
             rb.AddForce(new Vector2(forward, upward), ForceMode.Impulse);
+            
             rb.drag = 0;
+
+
+            
         }
-        
+
     }
 }
