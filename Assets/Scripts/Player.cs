@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     //to reference our healthbar object
     public HealthBar healthBar;
     public EnergyBar energyBar;
-    public Hea
+    
     // Start is called before the first frame update
     void Start()
     {

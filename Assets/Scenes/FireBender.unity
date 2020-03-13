@@ -1184,7 +1184,7 @@ GameObject:
   - component: {fileID: 1942546693}
   - component: {fileID: 1942546692}
   m_Layer: 0
-  m_Name: Player
+  m_Name: FireElemental
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1253,6 +1253,7 @@ MonoBehaviour:
   jumpForce: 10
   numberOfJumps: 2
   gravity: -20
+  horizontal: 0
 --- !u!65 &1942546696
 BoxCollider:
   m_ObjectHideFlags: 0
