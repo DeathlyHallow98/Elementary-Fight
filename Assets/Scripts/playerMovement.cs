@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public float moveSpeed = 10f;
-    public float jumpForce = 10f;
-    private bool canJump = false;
+    public float moveSpeed = 10f; // speed of the player
+    public float jumpForce = 10f; // jump force
+    private bool canJump = false; 
     public float numberOfJumps = 2;
     public float gravity = -20f;
+    private bool facingRight = true; // check where the player is facing
+    public float horizontal; // values between -1,0,1
 
 
     // increase the gravity
@@ -16,17 +18,32 @@ public class playerMovement : MonoBehaviour
     // updates the canJump boolean
     void FixedUpdate()
     {
-        
+        //moves the player based on direction   
         Vector3 playerMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
         transform.position += playerMovement * moveSpeed * Time.deltaTime;
+        //checks if can jump or not
         if (numberOfJumps < 1)
         {
             canJump = false;
         }
+
+
+}
+    //flip the player in the opposite direction
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        transform.Rotate(0f, 180f, 0f);
     }
 
     private void Update()
     {
+        horizontal = Input.GetAxis("Horizontal"); //set horizontal value
+        //flips the player
+        if ((horizontal < 0 && facingRight) || (horizontal > 0 && !facingRight))
+        {
+            Flip();
+        }
         Physics.gravity = new Vector3(0f, gravity, 0f);
         if (Input.GetButtonDown("Jump") && canJump)
         {
@@ -37,6 +54,7 @@ public class playerMovement : MonoBehaviour
     //Player Jumps, velocity is et to zero so second jump has the same height
     void Jump()
     {
+        Debug.Log("working");
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.AddForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
         rb.velocity = new Vector2(0, 0);
