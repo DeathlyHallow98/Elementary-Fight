@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     //to reference our healthbar object
     public HealthBar healthBar;
     public EnergyBar energyBar;
+    public Hea
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
         //    TakeDamage(1);
         //}
         //decrease or increase player energy here
-        
+         
     }
     void TakeDamage(int damage)
     {
@@ -38,8 +39,12 @@ public class Player : MonoBehaviour
         healthBar.SetHealth(currentHealth);
 
     }
-    void SpendMeter(int meter)
+    void SpendMeter(int spentmeter)
     {
-
+        currentEnergy -= spentmeter;
+        energyBar.SetEnergy(currentEnergy);
     }
+
+    
+    
 }

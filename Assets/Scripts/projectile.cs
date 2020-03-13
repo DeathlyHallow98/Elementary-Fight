@@ -26,7 +26,7 @@ public class projectile : MonoBehaviour
         {
            if(scale <=2)
             {
-            scale += 0.1f;
+            scale += 0.01f;
             tr.localScale = new Vector3(scale, scale, scale);
             }
 

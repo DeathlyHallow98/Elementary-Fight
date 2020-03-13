@@ -6,15 +6,16 @@ public class miniAttack : MonoBehaviour
 {
     public GameObject projPreFab;
     public float drag = 0;
-    public float scale = 2f;
-    public float timer;
+    public float scale = 0.25f;
+ 
  
 
 
     // Update is called once per frame
     void Update()
     {
-        timer += 1.0F * Time.deltaTime;
+       
+        
         if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("pressed");
@@ -29,9 +30,13 @@ public class miniAttack : MonoBehaviour
 
     void Attack()
     {
-        Instantiate(projPreFab, transform.position, transform.rotation);
 
-        //add a timer here
+        //USE THIS CODE IF YOU WANT TO GET RID OF CLONED OBJECTS SHOT AS PROJECTILES
+        //---------------------------------------
+        var timedestroy = 5.0f;
+        GameObject fireball = Instantiate(projPreFab, transform.position, transform.rotation);
+        Destroy(fireball, timedestroy);
+        //add a timer 
 
     }
    

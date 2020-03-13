@@ -22,5 +22,6 @@ public class EnergyBar : MonoBehaviour
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
     //regen meter later
+    
 
 }
