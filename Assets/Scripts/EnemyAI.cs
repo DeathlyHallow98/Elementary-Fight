@@ -13,13 +13,16 @@ public class EnemyAI : MonoBehaviour
     private bool facingRight = true; // check where the player is facing
     private bool[] canRun = new bool[5];
     private float waitTime;
-    public float moveSpeed = 1f;
+    public float moveSpeed = 6f;
     public float jumpForce = 10f; // jump force
     public float numberOfJumps = 2;
     public float gravity = -20f;
     public float timer;
-    public GameObject Player;
-    public Rigidbody rb;
+    public GameObject earthProjPrefab;
+    private GameObject ground;
+    private GameObject Player;
+    private Transform firePoint;
+    private Rigidbody rb;
     public int horizontal; // values between -1,0,1
 
     public NavMeshAgent nav;
@@ -29,6 +32,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
+        firePoint = transform.Find("firepoint");
         nav = gameObject.GetComponent<NavMeshAgent>();
         nav.updateRotation = false;
         rb = gameObject.GetComponent<Rigidbody>();
@@ -42,37 +46,44 @@ public class EnemyAI : MonoBehaviour
         moveSet.Add(lightAttack);
         moveSet.Add(chargedAttack);
         moveSet.Add(shield);
-        moveSet.Add(move);
         moveSet.Add(jump);
 
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         timer += Time.deltaTime;
-        int i = Random.Range(0, 5);
-        if (numberOfJumps < 2)
+        int i = Random.Range(0, 4);
+        if (numberOfJumps < 1)
         {
             canJump = false;
         }
         //moveSet[i]();
-        //Debug.Log("index i: "+i);
-        //Debug.Log(canMove);
-        //moveSet[3](i);
-        if (timer >= 0.5)
+        if(timer > Random.Range(1,6))
         {
-            moveSet[4](i);
+            canMove = true;
             timer = 0;
-           // StartCoroutine(Timeout(i));
+            moveSet[i](i);
         }
+            
+        move(i);
+ 
+           // StartCoroutine(Timeout(i));
+
+        
         
     }
 
     public void lightAttack(int x)
     {
-      Debug.Log("Light Attack");
-      canRun[x] = true;
+        canMove = false;
+        ground = GameObject.FindGameObjectWithTag("Ground");
+        float yPos = ground.transform.position.x;
+
+        Vector3 instancePos = new Vector3(transform.position.x, yPos, transform.position.z);
+        Instantiate(earthProjPrefab, instancePos, transform.rotation);
+        canMove = true;
     }
     public void chargedAttack(int x)
     {
@@ -87,32 +98,40 @@ public class EnemyAI : MonoBehaviour
     }
     public void move(int x)
     {
-        Debug.Log(nav.velocity);
-        float xPos = gameObject.transform.position.x;
-        float newX = 0;
-        Player = GameObject.FindGameObjectWithTag("Player");
-        //Debug.Log("move");
-        try
+        if(canMove)
         {
-            float playerPos = Player.transform.position.x;
-            newX = Random.Range(xPos, playerPos);
-
-            if ((transform.position.x > playerPos && facingRight) || (transform.position.x < playerPos && !facingRight))
+            // Debug.Log(nav.velocity);
+            float xPos = gameObject.transform.position.x;
+            float newX = 0;
+            Player = GameObject.FindGameObjectWithTag("Player");
+            //Debug.Log("move");
+            try
             {
-                Flip();
+                float playerPos = Player.transform.position.x;
+                newX = Random.Range(xPos, playerPos);
+
+                if ((transform.position.x > playerPos && facingRight) || (transform.position.x < playerPos && !facingRight))
+                {
+                    Flip();
+                }
+
+            }
+            catch
+            {
+                Debug.Log("No Player");
+                newX = xPos + Random.Range(xPos - 100, xPos + 100);
+            }
+
+
+            Vector3 target = new Vector3(newX, transform.position.y, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * moveSpeed);
+            // nav.SetDestination(target);
+            if(transform.position == target)
+            {
+                canMove = false;
             }
 
         }
-        catch
-        {
-            Debug.Log("No Player");
-            newX = xPos + Random.Range(xPos - 100, xPos + 100);
-        }
-
-
-        Vector3 target = new Vector3(newX, transform.position.y, transform.position.z);
-       
-        nav.SetDestination(target);
 
 
 
@@ -123,9 +142,9 @@ public class EnemyAI : MonoBehaviour
         Debug.Log("Jumoed");
         if (canJump)
         {
-
-           // rb.AddForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
-            rb.velocity += Vector3.up * jumpForce;
+           // nav.Stop(true);
+            rb.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
+            rb.velocity = new Vector2(0, 0);
             numberOfJumps--;
         }
 
@@ -179,5 +198,6 @@ public class EnemyAI : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         numberOfJumps = 2;
+        //nav.Resume();
     }
 }
