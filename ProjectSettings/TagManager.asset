@@ -7,6 +7,9 @@ TagManager:
   - water
   - fire
   - heavyfire
+  - waterShield
+  - Ground
+  - EarthElemental
   layers:
   - Default
   - TransparentFX
