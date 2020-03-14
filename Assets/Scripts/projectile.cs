@@ -11,10 +11,12 @@ public class projectile : MonoBehaviour
     private Rigidbody rb; // bullet's rigidbody
     private Transform tr; // bullet's transform
     private bool released = false; //so that clicking buttons again will not affect it once released
+    private Transform firepoint;
    
     //initialize everything
     private void Start()
     {
+        firepoint = GameObject.FindGameObjectWithTag("Player").transform.Find("firepoint");
         forward = transform.right.x * speed; //direction times speed (-ve or +ve)
         rb = gameObject.GetComponent<Rigidbody>();
         tr = gameObject.GetComponent<Transform>();
@@ -23,6 +25,10 @@ public class projectile : MonoBehaviour
     }
     void Update()
     {
+        if(!released)
+        {
+            tr.position = firepoint.position;
+        }
         //increase the size
         if (Input.GetButton("Fire1"))
         {
@@ -31,6 +37,7 @@ public class projectile : MonoBehaviour
             scale += 0.1f;
             tr.localScale = new Vector3(scale, scale, scale);
             }
+            
 
         }
 
@@ -40,7 +47,7 @@ public class projectile : MonoBehaviour
               
             if(!released)
             {
-                Debug.Log(forward);
+                
                 rb.AddForce(new Vector2(forward, upward), ForceMode.Impulse);
                 rb.drag = 0;
                 Destroy(gameObject, 1);

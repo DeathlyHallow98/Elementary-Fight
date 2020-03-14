@@ -10,6 +10,7 @@ TagManager:
   - waterShield
   - Ground
   - EarthElemental
+  - WaterElemental
   layers:
   - Default
   - TransparentFX
