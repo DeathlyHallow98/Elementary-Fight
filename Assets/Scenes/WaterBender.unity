@@ -666,9 +666,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c4b5c9b2e208ba4081d33877fd24070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1086795923}
-  smoothSpeed: 10.17
-  offset: {x: 0.57, y: -3, z: -23}
+  targets:
+  - {fileID: 773800077}
+  - {fileID: 991613595}
+  smoothSpeed: 0.5
+  offset: {x: -0.44, y: 6.2, z: -52.15}
+  minZoom: 40
+  maxZoom: 10
+  limit: 37
 --- !u!81 &1149792447
 AudioListener:
   m_ObjectHideFlags: 0
@@ -692,7 +697,7 @@ Camera:
   m_SensorSize: {x: 70.41, y: 52.63}
   m_LensShift: {x: 0, y: 0}
   m_GateFitMode: 2
-  m_FocalLength: 40.51132
+  m_FocalLength: 80.98924
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -701,7 +706,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 66.01322
+  field of view: 36
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
