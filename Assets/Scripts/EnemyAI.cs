@@ -1,47 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    //booleans to check if they can perform these actions or not
     private bool canJump = true;
     private bool canMove = true;
-    //private bool canLightAttack = true;
-    //private bool canChargeAttack = true;
-    //private bool canShield = true;
-    private bool facingRight = true; // check where the player is facing
-    private bool[] canRun = new bool[5];
-    private float waitTime;
+    private bool canShield = true;
+    private bool facingRight = true; 
+
+    //variables for speed and jump forces and max number of jumps
     public float moveSpeed = 6f;
-    public float jumpForce = 10f; // jump force
+    public float jumpForce = 10f; 
     public float numberOfJumps = 2;
-    public float gravity = -20f;
-    public float timer;
-    public GameObject earthProjPrefab;
-    private GameObject ground;
-    private GameObject Player;
-    private Transform firePoint;
-    private Rigidbody rb;
-    public int horizontal; // values between -1,0,1
+    public float timer,scale; //timer to create a timer, scale to set the size of the objects
 
-    public NavMeshAgent nav;
-    delegate void MoveSets(int x);
+    public GameObject earthProjPrefab,earthShieldPrefab; //prefabs for projectile and shield
+    private GameObject ground; //referance to the Ground
+    private GameObject Player; //reference to player1 
+    private Transform firePoint; //point where the projectiles fire from
+    private Rigidbody rb; 
 
+    
+    delegate void MoveSets();
+    //list of methods
     List<MoveSets> moveSet;
 
     void Start()
     {
-        firePoint = transform.Find("firepoint");
-        nav = gameObject.GetComponent<NavMeshAgent>();
-        nav.updateRotation = false;
+        firePoint = transform.Find("firepoint"); // finds the object with its children
         rb = gameObject.GetComponent<Rigidbody>();
-        //canRun[0] = true;
-        //canRun[1] = true;
-        //canRun[2] = true;
-        //canRun[3] = true;
-        //canRun[4] = true;
-        Debug.Log("Start ran");
+
+        //initialize the moveset and add the methods
         moveSet = new List<MoveSets>();
         moveSet.Add(lightAttack);
         moveSet.Add(chargedAttack);
@@ -50,82 +41,99 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        timer += Time.deltaTime;
-        int i = Random.Range(0, 4);
-        if (numberOfJumps < 1)
-        {
+        timer += Time.deltaTime; 
+        int i = Random.Range(0, 4); //generates a random number between (0,4]
+
+        //can't jump if limit reached
+        if (numberOfJumps < 1) {
             canJump = false;
         }
-        //moveSet[i]();
-        if(timer > Random.Range(1,6))
-        {
+
+        //runs a random method between random intervals
+        if(timer > Random.Range(1,4))
+        { 
             canMove = true;
             timer = 0;
-            moveSet[i](i);
+            moveSet[i]();
         }
             
-        move(i);
- 
-           // StartCoroutine(Timeout(i));
+        move();
 
-        
-        
     }
 
-    public void lightAttack(int x)
+    //melee attack
+    public void lightAttack()
     {
-        canMove = false;
-        ground = GameObject.FindGameObjectWithTag("Ground");
-        float yPos = ground.transform.position.x;
+        earthProjPrefab.transform.localScale = new Vector3(scale, scale, scale); //set the local scale
+        canMove = false; //briefly stop the player from moving
 
-        Vector3 instancePos = new Vector3(transform.position.x, yPos, transform.position.z);
-        Instantiate(earthProjPrefab, instancePos, transform.rotation);
+        ground = GameObject.FindGameObjectWithTag("Ground"); 
+        float yPos = ground.transform.position.y; //set the y value to ground's y
+        float xPos = firePoint.transform.position.x; //set the x value to the firepoint's x
+
+        Vector3 instancePos = new Vector3(xPos, yPos, transform.position.z);
+        Instantiate(earthProjPrefab, instancePos, transform.rotation); //instantiate at that position
+
         canMove = true;
     }
-    public void chargedAttack(int x)
+
+    //charged attack
+    public void chargedAttack()
     {
-       Debug.Log("Charged Attack");
-       canRun[x] = true;
+        //calls light attack but bigger
+        scale = 2; 
+        lightAttack();
+        scale = 1;
     }
-    public void shield(int x)
+
+    //shield
+    public void shield()
     {
-      Debug.Log("Shield");
-      canRun[x] = true;
+        if(numberOfJumps ==2 && canShield) //if grounded
+        {
+            canShield = false; 
+            float yPos = ground.transform.position.y;
+            Vector3 instancePos = new Vector3(transform.position.x, yPos, transform.position.z);
+            Instantiate(earthShieldPrefab, instancePos, transform.rotation); //instantiate the shield where the player is
+            StartCoroutine(Timeout(20)); //shield cooldown for 20s
+        }
 
     }
-    public void move(int x)
+
+    //move
+    public void move()
     {
         if(canMove)
         {
-            // Debug.Log(nav.velocity);
-            float xPos = gameObject.transform.position.x;
+   
+            float xPos = gameObject.transform.position.x; //current x position
             float newX = 0;
-            Player = GameObject.FindGameObjectWithTag("Player");
-            //Debug.Log("move");
+            Player = GameObject.FindGameObjectWithTag("Player"); //refernce to the player1
             try
-            {
-                float playerPos = Player.transform.position.x;
-                newX = Random.Range(xPos, playerPos);
+            {   
+                float playerPos = Player.transform.position.x; //player's position
+                newX = Random.Range(xPos, playerPos); // a random point between player and itself
 
                 if ((transform.position.x > playerPos && facingRight) || (transform.position.x < playerPos && !facingRight))
                 {
-                    Flip();
+                    Flip(); //flips based on where the player is
                 }
 
             }
             catch
             {
+                //if the player is not in the scene
                 Debug.Log("No Player");
                 newX = xPos + Random.Range(xPos - 100, xPos + 100);
             }
 
-
+            //moves toward the random point between player and itself
             Vector3 target = new Vector3(newX, transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * moveSpeed);
-            // nav.SetDestination(target);
+
+            //once it reaches the target the function stops
             if(transform.position == target)
             {
                 canMove = false;
@@ -133,71 +141,37 @@ public class EnemyAI : MonoBehaviour
 
         }
 
-
-
-
     }
-    public void jump(int x)
-    {
-        Debug.Log("Jumoed");
-        if (canJump)
-        {
-           // nav.Stop(true);
-            rb.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
-            rb.velocity = new Vector2(0, 0);
+
+    //jump
+    public void jump(){
+        if (canJump){   
+            rb.AddRelativeForce(new Vector2(0f, jumpForce), ForceMode.Impulse); //adds force in the y direction
+            rb.velocity = new Vector2(0, 0); //to avoid interference when double jumping
             numberOfJumps--;
         }
 
     }
-    public void Flip()
-    {
+    //flips the player in the oposite direction
+    public void Flip(){
         facingRight = !facingRight;
         transform.Rotate(0f, 180f, 0f);
     }
 
-
-    IEnumerator Timeout(int i)
-    {
-        float timePassed = 0;
-        Debug.Log("Timeout i: " + i);
-        canRun[i] = false;
-
-        switch (i)
-        {
-            case 3:
-                waitTime = 4;
-
-                    break;
-            default:
-                waitTime = 5;
-                break;
-        }
-
-
-        while (timePassed < waitTime)
-        {
-            moveSet[i](i);
-            timePassed += Time.deltaTime;
-          //  Debug.Log(canRun[i] + " " + i);
-        }
-
-        // yield return new WaitForSeconds(waitTime);
-     //   canRun[i] = true;
-        yield return null;
-
-
+    //acts as a timer
+    IEnumerator Timeout(float i){
+        yield return new WaitForSeconds(i);
+        canShield = true;
     }
-    //this method checks if the player is on the ground
-    private void OnTriggerStay(Collider other)
-    {
-        canJump = true;
 
+    // checks if the player is on the ground
+    private void OnTriggerStay(Collider other){
+        canJump = true;
     }
 
     //set jumps back to 2 when the player hits the ground
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter(Collider other){
         numberOfJumps = 2;
-        //nav.Resume();
+
     }
 }

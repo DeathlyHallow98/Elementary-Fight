@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  speed: 50
+  speed: 30.38
   timer: 0
 --- !u!54 &7460812083374073598
 Rigidbody:

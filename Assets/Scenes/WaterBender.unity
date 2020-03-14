@@ -475,9 +475,8 @@ GameObject:
   - component: {fileID: 991613590}
   - component: {fileID: 991613589}
   - component: {fileID: 991613591}
-  - component: {fileID: 991613596}
   m_Layer: 0
-  m_Name: EarthElemetal
+  m_Name: EarthElemental
   m_TagString: EarthElemental
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -527,12 +526,12 @@ MonoBehaviour:
   moveSpeed: 9.93
   jumpForce: 10
   numberOfJumps: 2
-  gravity: -20
   timer: 0
+  scale: 0
   earthProjPrefab: {fileID: 7460812083374073476, guid: 1df86d00daccc134ca06cd3c82573116,
     type: 3}
-  horizontal: 0
-  nav: {fileID: 0}
+  earthShieldPrefab: {fileID: 1925380871938520529, guid: 49e21924cb7adb34a97ba04a6fdab5fa,
+    type: 3}
 --- !u!65 &991613592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -599,35 +598,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 991613588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.4, y: 2.67, z: -0.64}
+  m_LocalPosition: {x: 13.4, y: 2.01, z: -0.64}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children:
   - {fileID: 1274232093}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &991613596
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991613588}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.36
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 1000
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &1086795922
 GameObject:
   m_ObjectHideFlags: 0
