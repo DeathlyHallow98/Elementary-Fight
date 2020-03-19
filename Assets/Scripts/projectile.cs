@@ -17,15 +17,16 @@ public class projectile : MonoBehaviour
     private void Start()
     {
         firepoint = GameObject.FindGameObjectWithTag("Player").transform.Find("firepoint");
-        forward = transform.right.x * speed; //direction times speed (-ve or +ve)
+      
         rb = gameObject.GetComponent<Rigidbody>();
         tr = gameObject.GetComponent<Transform>();
         tr.localScale = new Vector3(scale, scale, scale); 
         
     }
-    void Update()
+    void FixedUpdate()
     {
-        if(!released)
+        forward = firepoint.transform.right.x * speed; //direction times speed (-ve or +ve)
+        if (!released)
         {
             tr.position = firepoint.position;
         }

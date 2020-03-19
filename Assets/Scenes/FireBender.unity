@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -352,9 +352,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c4b5c9b2e208ba4081d33877fd24070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1109868291}
+  targets: []
   smoothSpeed: 10.17
   offset: {x: 0.57, y: -3, z: -23}
+  minZoom: 40
+  maxZoom: 10
+  limit: 37
 --- !u!81 &377053995
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1185,7 +1188,7 @@ GameObject:
   - component: {fileID: 1942546692}
   m_Layer: 0
   m_Name: FireElemental
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1204,10 +1207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 0
-  maxEnergy: 10
-  currentEnergy: 0
   healthBar: {fileID: 2027237242}
-  energyBar: {fileID: 0}
 --- !u!135 &1942546693
 SphereCollider:
   m_ObjectHideFlags: 0

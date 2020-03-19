@@ -31,6 +31,7 @@ public class EnemyAI : MonoBehaviour
     {
         firePoint = transform.Find("firepoint"); // finds the object with its children
         rb = gameObject.GetComponent<Rigidbody>();
+        ground = GameObject.FindGameObjectWithTag("Ground");
 
         //initialize the moveset and add the methods
         moveSet = new List<MoveSets>();
@@ -69,7 +70,7 @@ public class EnemyAI : MonoBehaviour
         earthProjPrefab.transform.localScale = new Vector3(scale, scale, scale); //set the local scale
         canMove = false; //briefly stop the player from moving
 
-        ground = GameObject.FindGameObjectWithTag("Ground"); 
+        
         float yPos = ground.transform.position.y; //set the y value to ground's y
         float xPos = firePoint.transform.position.x; //set the x value to the firepoint's x
 
