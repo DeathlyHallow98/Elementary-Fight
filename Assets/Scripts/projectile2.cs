@@ -11,32 +11,18 @@ public class projectile2 : MonoBehaviour
     private Rigidbody rb; // bullet's rigidbody
     private Transform tr; // bullet's transform
     private bool released = false; //so that clicking buttons again will not affect it once released
-<<<<<<< HEAD
     private Transform firepoint;
 
 
     // Update is called once per frame
-=======
->>>>>>> 40e9b11454c0a0c908525235e453fe5961c7125e
 
-    //initialize everything
     private void Start()
     {
-<<<<<<< HEAD
         firepoint = GameObject.FindGameObjectWithTag("Player").transform.Find("firepoint");
 
         rb = gameObject.GetComponent<Rigidbody>();
         tr = gameObject.GetComponent<Transform>();
        // tr.localScale = new Vector3(scale, scale, scale);
-=======
-        forward = transform.right.x * speed; //direction times speed (-ve or +ve)
-        rb = gameObject.GetComponent<Rigidbody>();
-        tr = gameObject.GetComponent<Transform>();
-
-        // tr.localScale = new Vector3(scale, scale, scale);
-        // Debug.Log(scale);
-        //Debug.Log(tr.localScale);
->>>>>>> 40e9b11454c0a0c908525235e453fe5961c7125e
     }
     void Update()
     {
@@ -66,11 +52,7 @@ public class projectile2 : MonoBehaviour
 
             if (!released)
             {
-<<<<<<< HEAD
 
-=======
-                Debug.Log(forward);
->>>>>>> 40e9b11454c0a0c908525235e453fe5961c7125e
                 rb.AddForce(new Vector2(forward, upward), ForceMode.Impulse);
                 rb.drag = 0;
                 Destroy(gameObject, 1);
@@ -78,10 +60,6 @@ public class projectile2 : MonoBehaviour
             }
             //once set true, it should be not be set back to false!!!!
             released = true;
-<<<<<<< HEAD
-=======
-
->>>>>>> 40e9b11454c0a0c908525235e453fe5961c7125e
         }
 
     }

@@ -2,6 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class DeepChild
+{
+
+ 
+    //Depth-first search
+    public static Transform FindDeepChild(this Transform aParent, string aName)
+    {
+        foreach(Transform child in aParent)
+        {
+            if(child.name == aName )
+                return child;
+            var result = child.FindDeepChild(aName);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
+  
+}
 public class projectile : MonoBehaviour
 {
     public float speed; //speed of the bullet
@@ -12,19 +31,26 @@ public class projectile : MonoBehaviour
     private Transform tr; // bullet's transform
     private bool released = false; //so that clicking buttons again will not affect it once released
     private Transform firepoint;
-   
+    private GameObject player;
+    private Animator animator;
+    private float projSpeed = 0;
+
+
     //initialize everything
     private void Start()
     {
-        firepoint = GameObject.FindGameObjectWithTag("Player").transform.Find("firepoint");
-      
+        player = GameObject.FindGameObjectWithTag("Player");
+        firepoint =player.transform.FindDeepChild("firepoint");
+        animator = player.GetComponent<Animator>();
+
         rb = gameObject.GetComponent<Rigidbody>();
         tr = gameObject.GetComponent<Transform>();
-        tr.localScale = new Vector3(scale, scale, scale); 
-        
+        tr.localScale = new Vector3(scale, scale, scale);
+      
     }
     void FixedUpdate()
     {
+        animator.SetFloat("ProjSpeed", projSpeed);
         forward = firepoint.transform.right.x * speed; //direction times speed (-ve or +ve)
         if (!released)
         {
@@ -35,6 +61,7 @@ public class projectile : MonoBehaviour
         {
            if(scale <=2 && !released)
             {
+                projSpeed += 0.1f;
             scale += 0.1f;
             tr.localScale = new Vector3(scale, scale, scale);
             }
@@ -48,7 +75,7 @@ public class projectile : MonoBehaviour
               
             if(!released)
             {
-                
+                animator.SetBool("ProjReleased", true);
                 rb.AddForce(new Vector2(forward, upward), ForceMode.Impulse);
                 rb.drag = 0;
                 Destroy(gameObject, 1);
@@ -56,9 +83,12 @@ public class projectile : MonoBehaviour
             }
             //once set true, it should be not be set back to false!!!!
             released = true;
+            animator.SetBool("ProjReleased", true);
+            projSpeed = 0;
 
         }
 
         
     }
+
 }
